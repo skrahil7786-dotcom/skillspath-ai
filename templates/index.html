@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+
+{% block title %}MentorAI — Your AI Mentor for GATE, Placements & Semester Success{% endblock %}
+
+{% block public_content %}
+<!-- 1. HERO SECTION -->
+<section class="hero-section">
+  <div class="hero-content">
+    <div style="margin-bottom: 16px;">
+      <span class="badge badge-primary" style="font-size: 0.85rem; padding: 4px 12px;">
+        AI-Powered Learning Mentor
+      </span>
+    </div>
+
+    <h1 class="hero-title">
+      Your AI Mentor for GATE, Placements & Semester Success
+    </h1>
+
+    <p class="hero-subtitle">
+      MentorAI provides weak-topic diagnosis, personalized study plans, curated free resources, performance tracking, and smart revision reminders to keep you consistent.
+    </p>
+
+    <div class="hero-actions">
+      <a href="/onboarding" class="btn btn-primary btn-lg">
+        Get Started Free
+      </a>
+      <a href="#features" class="btn btn-secondary btn-lg">
+        Explore Features
+      </a>
+    </div>
+  </div>
+
+  <!-- Dashboard Preview Mockup (Clean Light SaaS style) -->
+  <div class="mockup-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 18px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-main);">Dashboard Preview</span>
+        <span class="badge badge-neutral">Active Student</span>
+      </div>
+      <span style="font-size: 0.82rem; color: var(--text-muted);">Today's Session</span>
+    </div>
+
+    <div class="grid grid-3">
+      <!-- Today's Focus Card -->
+      <div style="background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--primary); font-weight: 600; margin-bottom: 4px;">
+          Today's Focus
+        </div>
+        <h4 style="font-size: 1.05rem; margin-bottom: 4px;">Binary Trees & Balancing</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Duration: 90 mins • High exam weightage</p>
+        <span class="badge badge-primary">Task: Inorder Traversal & AVL</span>
+      </div>
+
+      <!-- Subject Progress Bars -->
+      <div style="background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+            <span>Data Structures</span>
+            <span style="font-weight: 600; color: var(--text-main);">68%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width: 68%;"></div></div>
+        </div>
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+            <span>DBMS</span>
+            <span style="font-weight: 600; color: var(--text-main);">82%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width: 82%;"></div></div>
+        </div>
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+            <span>Operating Systems</span>
+            <span style="font-weight: 600; color: var(--text-main);">45%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width: 45%;"></div></div>
+        </div>
+      </div>
+
+      <!-- AI Mentor Suggestion -->
+      <div style="background: var(--primary-light); border: 1px solid #c7d2fe; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-bottom: 6px;">
+            AI Mentor Suggestion
+          </div>
+          <p style="font-size: 0.88rem; color: #374151; line-height: 1.45;">
+            “Your last quiz shows confusion between 2NF and 3NF. Dedicate 20 minutes to candidate keys before quiz 2.”
+          </p>
+        </div>
+        <div style="margin-top: 10px;">
+          <span class="badge badge-primary">Adaptive Insight</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. FEATURES SECTION (6 Cards) -->
+<section id="features" class="section-wrapper">
+  <div class="section-header">
+    <div class="section-tag">Features</div>
+    <h2 class="section-title">Everything You Need for Exam Success</h2>
+    <p class="section-desc">
+      A systematic preparation framework that eliminates guesswork and maximizes study efficiency.
+    </p>
+  </div>
+
+  <div class="features-grid">
+    <div class="card feature-card">
+      <div class="feature-icon-box">📅</div>
+      <h3>Personalized Plans</h3>
+      <p>Custom 7-day study schedules calibrated to your target exam date, daily hours, and subject priorities.</p>
+    </div>
+
+    <div class="card feature-card">
+      <div class="feature-icon-box">🎯</div>
+      <h3>Adaptive Quizzes</h3>
+      <p>5-question diagnostic sets with real-time difficulty scaling that pinpoint concept misconceptions.</p>
+    </div>
+
+    <div class="card feature-card">
+      <div class="feature-icon-box">🤖</div>
+      <h3>AI Mentor</h3>
+      <p>On-demand technical guidance to clarify difficult topics, explain mistakes, and recommend study actions.</p>
+    </div>
+
+    <div class="card feature-card">
+      <div class="feature-icon-box">📊</div>
+      <h3>Performance Tracking</h3>
+      <p>Clear visual progress metrics for each subject, readiness score, and daily study streaks.</p>
+    </div>
+
+    <div class="card feature-card">
+      <div class="feature-icon-box">⏰</div>
+      <h3>Smart Reminders</h3>
+      <p>Spaced repetition queue (1 → 3 → 7 days) that automatically schedules missed concepts for review.</p>
+    </div>
+
+    <div class="card feature-card">
+      <div class="feature-icon-box">📚</div>
+      <h3>Free Resources</h3>
+      <p>Curated, peer-reviewed engineering lectures and docs from NPTEL, GeeksforGeeks, and official standards.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. HOW IT WORKS SECTION (4 steps) -->
+<section id="how-it-works" class="section-wrapper" style="background: #ffffff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-header">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">Four Steps to Structured Learning</h2>
+    <p class="section-desc">Simple, transparent, and proven study methodology.</p>
+  </div>
+
+  <div class="timeline-horizontal">
+    <div class="card timeline-step">
+      <div class="timeline-number">1</div>
+      <h4>Set Your Goal</h4>
+      <p>Specify GATE CSE, Campus Placements, or Semester exams with your target date and daily hours.</p>
+    </div>
+
+    <div class="card timeline-step">
+      <div class="timeline-number">2</div>
+      <h4>Select Subjects</h4>
+      <p>Choose subjects and rate your confidence to highlight weak topics needing extra focus.</p>
+    </div>
+
+    <div class="card timeline-step">
+      <div class="timeline-number">3</div>
+      <h4>Diagnostic Quiz</h4>
+      <p>Take adaptive diagnostic questions to measure baseline concept understanding.</p>
+    </div>
+
+    <div class="card timeline-step">
+      <div class="timeline-number">4</div>
+      <h4>Follow AI Plan</h4>
+      <p>Execute structured daily learning, practice, and revision with spaced reminders.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. MENTOR PREVIEW SECTION -->
+<section class="section-wrapper">
+  <div class="section-header">
+    <div class="section-tag">Mentor Preview</div>
+    <h2 class="section-title">Technical Support Whenever You Need It</h2>
+    <p class="section-desc">Get fast concept clarification and practical study guidance.</p>
+  </div>
+
+  <div class="grid grid-2" style="align-items: center;">
+    <!-- Chat Preview -->
+    <div class="card" style="padding: 20px;">
+      <div style="display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;">
+        <div class="brand-icon" style="width: 24px; height: 24px; font-size: 0.8rem;">M</div>
+        <div>
+          <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-main);">MentorAI</div>
+          <div style="font-size: 0.75rem; color: var(--success);">● Active</div>
+        </div>
+      </div>
+
+      <div class="chat-bubble student">
+        “I don’t understand normalization.”
+      </div>
+
+      <div class="chat-bubble mentor">
+        “Start with functional dependencies. Your last quiz shows confusion between 2NF and 3NF. Revise 2NF for 15 minutes, then attempt 3 questions.”
+      </div>
+
+      <div style="display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap;">
+        <span class="badge badge-primary">Explain 2NF vs 3NF</span>
+        <span class="badge badge-neutral">Practice 3 Normalization MCQs</span>
+      </div>
+    </div>
+
+    <!-- Recommended Resource Card beside chat -->
+    <div class="card" style="background: var(--bg-primary); border-color: #cbd5e1;">
+      <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--primary); font-weight: 600; margin-bottom: 6px;">
+        Recommended Resource
+      </div>
+      <h3 style="font-size: 1.15rem; margin-bottom: 6px;">NPTEL: Database Normalization</h3>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 14px;">
+        Comprehensive lecture on Functional Dependencies, Candidate Keys, and lossless 3NF decomposition.
+      </p>
+      <div style="display: flex; gap: 6px; margin-bottom: 16px;">
+        <span class="badge badge-primary">NPTEL</span>
+        <span class="badge badge-neutral">Video Lecture</span>
+        <span class="badge badge-success">Free</span>
+      </div>
+      <a href="/resources" class="btn btn-secondary btn-sm btn-block">
+        Explore Resources →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 5. FAQ SECTION -->
+<section id="faq" class="section-wrapper" style="border-top: 1px solid var(--border);">
+  <div class="section-header">
+    <div class="section-tag">FAQ</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-desc">Clear answers to common questions about preparing with MentorAI.</p>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-item open">
+      <div class="accordion-header">
+        <span>Is MentorAI free?</span>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        Yes, MentorAI is 100% free for students. We recommend exclusively open, high-quality resources from NPTEL, MDN, standard docs, and free practice platforms.
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Does it work for GATE and placements?</span>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        Yes. When you choose your goal, MentorAI prioritizes high-weight core subjects like DSA, Operating Systems, DBMS, and previous year question formats.
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>How does the AI mentor personalize my learning?</span>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        MentorAI evaluates your quiz performance, topic confidence, and missed concepts to build a balanced 50% learning, 30% practice, and 20% revision daily routine.
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Can it remind me to study daily?</span>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        Yes. Concepts you get wrong enter your Spaced Revision Queue with reminders at 1, 3, and 7 day intervals.
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Does it work without Gemini API?</span>
+        <span class="accordion-icon">+</span>
+      </div>
+      <div class="accordion-body">
+        Yes. MentorAI has a full local fallback algorithm and question bank, so it operates completely even if external AI APIs are unreachable.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FINAL CTA -->
+<section class="section-wrapper" style="text-align: center; padding-top: 20px;">
+  <div class="card" style="max-width: 760px; margin: 0 auto; padding: 48px 24px; background: var(--bg-card);">
+    <h2 style="font-size: 2rem; margin-bottom: 8px;">Stop guessing what to study.</h2>
+    <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 24px; max-width: 520px; margin-left: auto; margin-right: auto;">
+      Let MentorAI create your personalized learning path. Build consistency and master your engineering exams.
+    </p>
+    <a href="/onboarding" class="btn btn-primary btn-lg">
+      Get Started Free
+    </a>
+  </div>
+</section>
+
+<!-- 7. FOOTER -->
+<footer class="landing-footer">
+  <div class="footer-inner">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div class="brand-icon" style="width: 24px; height: 24px; font-size: 0.8rem;">M</div>
+      <strong style="color: var(--text-main); font-size: 1rem;">MentorAI</strong>
+      <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: 6px;">— Built for students, by students</span>
+    </div>
+
+    <div style="display: flex; gap: 20px; font-size: 0.88rem;">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="/auth/login">Login</a>
+      <a href="/onboarding">Get Started</a>
+    </div>
+
+    <div style="font-size: 0.82rem; color: var(--text-muted);">
+      © 2026 MentorAI. All rights reserved.
+    </div>
+  </div>
+</footer>
+{% endblock %}

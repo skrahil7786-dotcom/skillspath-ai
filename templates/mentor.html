@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% set is_app = true %}
+
+{% block title %}AI Mentor — MentorAI{% endblock %}
+
+{% block content %}
+<div style="height: calc(100vh - 120px); display: flex; flex-direction: column; max-width: 900px; margin: 0 auto; position: relative;">
+
+  <!-- Chat Header -->
+  <div class="glass-card" style="padding: 1rem 1.5rem; margin-bottom: 1rem; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <div class="brand-spark" style="width: 32px; height: 32px; font-size: 1rem;">✦</div>
+      <div>
+        <h2 style="font-size: 1.15rem; color: #fff; margin: 0;">MentorAI Assistant</h2>
+        <div style="font-size: 0.78rem; color: var(--status-success);">● Online • Calibrated to your diagnostic weak spots</div>
+      </div>
+    </div>
+    <span class="badge badge-primary">Engineering Mentor</span>
+  </div>
+
+  <!-- Suggested Prompt Chips -->
+  <div style="display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 0.75rem; flex-shrink: 0; scrollbar-width: none;">
+    <button type="button" class="btn btn-secondary btn-sm prompt-chip" style="font-size: 0.8rem; border-radius: var(--radius-pill); white-space: nowrap;">
+      💡 Explain my weakest topic
+    </button>
+    <button type="button" class="btn btn-secondary btn-sm prompt-chip" style="font-size: 0.8rem; border-radius: var(--radius-pill); white-space: nowrap;">
+      ⏱️ Create a 30-minute revision plan
+    </button>
+    <button type="button" class="btn btn-secondary btn-sm prompt-chip" style="font-size: 0.8rem; border-radius: var(--radius-pill); white-space: nowrap;">
+      ❓ Why did I get this question wrong?
+    </button>
+    <button type="button" class="btn btn-secondary btn-sm prompt-chip" style="font-size: 0.8rem; border-radius: var(--radius-pill); white-space: nowrap;">
+      📚 Recommend a resource
+    </button>
+  </div>
+
+  <!-- Scrollable Messages Container -->
+  <div id="chatMessages" class="glass-card" style="flex: 1; overflow-y: auto; padding: 1.5rem; border-radius: 16px; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;">
+    <!-- Welcome message from MentorAI -->
+    <div style="display: flex; gap: 0.75rem; align-items: flex-start; max-width: 85%;">
+      <div class="brand-spark" style="width: 28px; height: 28px; font-size: 0.85rem; flex-shrink: 0; margin-top: 2px;">✦</div>
+      <div class="chat-bubble mentor" style="margin: 0; border-radius: 16px; border-top-left-radius: 4px;">
+        Hello! I’m your <strong>MentorAI</strong>. I analyze your diagnostic quiz results, track your topic mastery, and schedule your spaced repetitions. How can I help you accelerate your preparation today?
+      </div>
+    </div>
+  </div>
+
+  <!-- Typing Indicator (Hidden by default) -->
+  <div id="typingIndicator" style="display: none; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem;">
+    <div class="brand-spark" style="width: 20px; height: 20px; font-size: 0.7rem;">✦</div>
+    <span>MentorAI is analyzing your query...</span>
+  </div>
+
+  <!-- Fixed Bottom Input Box -->
+  <div style="flex-shrink: 0;">
+    <form id="chatForm" style="display: flex; gap: 0.75rem; align-items: center;">
+      <div style="flex: 1; position: relative;">
+        <input type="text" id="chatInput" class="form-input" placeholder="Ask MentorAI anything about your syllabus, concepts, or schedule..." style="padding-right: 3rem; font-size: 0.95rem; border-radius: var(--radius-card);" autocomplete="off" required>
+      </div>
+      <button type="submit" id="sendBtn" class="btn btn-primary" style="border-radius: var(--radius-card); padding: 0.7rem 1.25rem;">
+        Send 🚀
+      </button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.MENTOR_USER_ID = {{ user_id | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/mentor.js') }}"></script>
+{% endblock %}

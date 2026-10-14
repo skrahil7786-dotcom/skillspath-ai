@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% set is_app = true %}
+
+{% block title %}Quiz — MentorAI{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+
+  <!-- Page Title matching sidebar -->
+  <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <h1 class="page-title">Quiz</h1>
+      <p class="page-subtitle">Adaptive diagnostic questions to measure concept understanding.</p>
+    </div>
+    <div>
+      <select id="quizSubjectSelect" class="form-select" style="width: auto; min-width: 220px; font-size: 0.9rem;">
+        <option value="Data Structures & Algorithms" selected>Data Structures & Algorithms</option>
+        <option value="DBMS">DBMS</option>
+        <option value="Operating Systems">Operating Systems</option>
+        <option value="Java">Java</option>
+        <option value="SQL">SQL</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Single Question View -->
+  <div id="quizContainer">
+    <!-- Progress Indicator: "Question 2 of 5" -->
+    <div style="margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 6px;">
+        <span id="progressQuestionText" style="font-weight: 600; color: var(--text-main);">Question 1 of 5</span>
+        <span id="answeredCounter" class="badge badge-neutral">0 of 5 Answered</span>
+      </div>
+      <div class="progress-track" style="height: 6px;">
+        <div id="quizProgressBar" class="progress-fill" style="width: 20%;"></div>
+      </div>
+    </div>
+
+    <!-- Active Single Question Card -->
+    <div id="singleQuestionCard" class="card" style="padding: 28px; margin-bottom: 24px;">
+      <!-- Populated dynamically via quiz.js -->
+    </div>
+
+    <!-- Question Navigation Controls -->
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <button type="button" id="prevQuestionBtn" class="btn btn-secondary" style="min-width: 110px;" disabled>
+        ← Previous
+      </button>
+
+      <div>
+        <button type="button" id="nextQuestionBtn" class="btn btn-secondary" style="min-width: 110px;">
+          Next →
+        </button>
+        <button type="button" id="submitQuizBtn" class="btn btn-primary btn-lg" style="min-width: 150px; display: none;">
+          Submit Quiz
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- After Submission: Results View -->
+  <div id="resultsContainer" style="display: none;">
+    <!-- Score & Overview Card -->
+    <div class="card" style="margin-bottom: 24px; text-align: center;">
+      <h2 style="font-size: 1.6rem; color: var(--text-main); margin-bottom: 6px;">Quiz Results</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">Diagnostic scoring and concept analysis.</p>
+
+      <div style="display: flex; justify-content: center; gap: 36px; margin-bottom: 24px;">
+        <div>
+          <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Score</div>
+          <div id="scoreDisplay" style="font-size: 2.4rem; font-weight: 700; color: var(--text-main);">0 / 5</div>
+        </div>
+        <div>
+          <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Accuracy</div>
+          <div id="accuracyDisplay" style="font-size: 2.4rem; font-weight: 700; color: var(--success);">0%</div>
+        </div>
+      </div>
+
+      <!-- MentorAI Next Action Directive -->
+      <div style="background: var(--primary-light); border: 1px solid #c7d2fe; border-radius: 12px; padding: 16px 20px; text-align: left; margin-bottom: 24px;">
+        <div style="font-size: 0.82rem; font-weight: 600; color: var(--primary); margin-bottom: 4px;">
+          MentorAI Next Action
+        </div>
+        <p id="nextActionText" style="color: #374151; font-size: 0.95rem; line-height: 1.5; margin: 0;"></p>
+      </div>
+
+      <!-- Exactly ONE Button: "Go to Dashboard" -->
+      <div>
+        <a id="resultsDashboardLink" href="/dashboard" class="btn btn-primary btn-lg" style="min-width: 220px;">
+          Go to Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Correct/Incorrect Review, Explanation & Misconceptions -->
+    <h3 style="font-size: 1.25rem; color: var(--text-main); margin-bottom: 16px;">Question Review</h3>
+    <div id="detailedReviewList" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;">
+      <!-- Populated via quiz.js -->
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.QUIZ_USER_ID = {{ user_id | tojson }};
+  window.QUIZ_DEFAULT_SUBJECT = {{ (subject or 'Data Structures & Algorithms') | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

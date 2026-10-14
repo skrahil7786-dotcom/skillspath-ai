@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+
+{% block title %}Onboarding — MentorAI{% endblock %}
+
+{% block public_content %}
+<div style="max-width: 800px; margin: 32px auto; padding: 0 16px;">
+  <!-- Wizard Card -->
+  <div class="card" style="padding: 32px;">
+
+    <!-- Wizard Header with Step Indicator & Progress Bar -->
+    <div style="margin-bottom: 28px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span id="stepIndicator" class="badge badge-primary" style="font-size: 0.85rem; padding: 4px 10px;">
+          Step 1 of 5
+        </span>
+        <span id="stepTitle" style="color: var(--text-muted); font-size: 0.92rem; font-weight: 600;">
+          Exam Goal & Timeline
+        </span>
+      </div>
+      <div class="progress-track">
+        <div id="wizardProgressBar" class="progress-fill" style="width: 20%;"></div>
+      </div>
+    </div>
+
+    <!-- Hidden field for user_id -->
+    <input type="hidden" id="userIdField" value="{{ user_id }}">
+
+    <!-- ================= STEP 1: Exam Goal & Exam Date ================= -->
+    <div id="step1" class="wizard-step">
+      <h2 style="font-size: 1.45rem; margin-bottom: 6px; color: var(--text-main);">Set your exam goal</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+        Tell us who you are and what exam you are preparing for so MentorAI can structure your path.
+      </p>
+
+      <div class="form-group">
+        <label class="form-label" for="fullName">Your Full Name <span style="color: var(--danger);">*</span></label>
+        <input type="text" id="fullName" class="form-input" placeholder="e.g. Rahul Sharma" required>
+        <div id="nameError" class="form-error">Please enter your full name.</div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="form-group">
+          <label class="form-label" for="primaryGoal">Primary Goal <span style="color: var(--danger);">*</span></label>
+          <select id="primaryGoal" class="form-select">
+            <option value="Campus Placement" selected>Campus Placement</option>
+            <option value="Off-Campus Placement">Off-Campus Placement</option>
+            <option value="GATE CSE">GATE CSE</option>
+            <option value="GATE Data Science & AI">GATE Data Science & AI</option>
+            <option value="Semester Exams">Semester Exams</option>
+            <option value="Government Exam">Government Exam</option>
+            <option value="Higher Studies">Higher Studies</option>
+            <option value="Skill Learning">Skill Learning</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="examDate">Exam Date <span style="color: var(--danger);">*</span></label>
+          <input type="date" id="examDate" class="form-input" required>
+          <div id="examDateError" class="form-error">Please select a valid exam date.</div>
+        </div>
+      </div>
+
+      <!-- Conditional: GATE Attempt Year -->
+      <div id="gateFields" class="form-group" style="display: none;">
+        <label class="form-label" for="gateYear">GATE Attempt Year</label>
+        <select id="gateYear" class="form-select">
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027" selected>2027</option>
+          <option value="2028">2028</option>
+        </select>
+      </div>
+
+      <!-- Conditional: Placement Target Role -->
+      <div id="placementFields" class="form-group">
+        <label class="form-label" for="targetRole">Target Role</label>
+        <select id="targetRole" class="form-select">
+          <option value="Software Developer" selected>Software Developer</option>
+          <option value="Backend Developer">Backend Developer</option>
+          <option value="Frontend Developer">Frontend Developer</option>
+          <option value="Data Analyst">Data Analyst</option>
+          <option value="AI/ML Engineer">AI/ML Engineer</option>
+          <option value="IoT/Embedded Engineer">IoT/Embedded Engineer</option>
+          <option value="Any software role">Any software role</option>
+        </select>
+      </div>
+
+      <!-- Conditional: Semester Exams -->
+      <div id="semesterFields" class="form-group" style="display: none;">
+        <div class="grid grid-2">
+          <div>
+            <label class="form-label" for="semesterSelect">Current Semester</label>
+            <select id="semesterSelect" class="form-select">
+              <option value="1st Semester">1st Semester</option>
+              <option value="2nd Semester">2nd Semester</option>
+              <option value="3rd Semester">3rd Semester</option>
+              <option value="4th Semester">4th Semester</option>
+              <option value="5th Semester">5th Semester</option>
+              <option value="6th Semester" selected>6th Semester</option>
+              <option value="7th Semester">7th Semester</option>
+              <option value="8th Semester">8th Semester</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="currentSubjectsInput">Current Semester Subjects</label>
+            <input type="text" id="currentSubjectsInput" class="form-input" placeholder="e.g. OS, DBMS, Networks">
+          </div>
+        </div>
+      </div>
+
+      <!-- Conditional: Government Exam Category -->
+      <div id="govtFields" class="form-group" style="display: none;">
+        <label class="form-label" for="govtCategory">Government Exam Category</label>
+        <select id="govtCategory" class="form-select">
+          <option value="SSC" selected>SSC</option>
+          <option value="Banking">Banking</option>
+          <option value="Railways">Railways</option>
+          <option value="State PSC">State PSC</option>
+          <option value="UPSC">UPSC</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="form-group">
+          <label class="form-label" for="prepStage">Preparation Stage</label>
+          <select id="prepStage" class="form-select">
+            <option value="Just starting" selected>Just starting</option>
+            <option value="Completed basics">Completed basics</option>
+            <option value="Revision stage">Revision stage</option>
+            <option value="Final 30 days">Final 30 days</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="educationLevel">Education Level</label>
+          <select id="educationLevel" class="form-select">
+            <option value="B.Tech" selected>B.Tech</option>
+            <option value="B.E.">B.E.</option>
+            <option value="B.Sc">B.Sc</option>
+            <option value="M.Tech">M.Tech</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= STEP 2: Subjects, Confidence, Priority ================= -->
+    <div id="step2" class="wizard-step" style="display: none;">
+      <h2 style="font-size: 1.45rem; margin-bottom: 6px; color: var(--text-main);">Subjects, confidence & priority</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+        Pick the subjects you need to master. Rate your confidence and priority level.
+      </p>
+
+      <div class="form-group">
+        <label class="form-label">Available Subjects (click to select):</label>
+        <div id="subjectPillsContainer" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;">
+          <!-- Subject chips populated via JS -->
+        </div>
+
+        <!-- Custom subject input -->
+        <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+          <input type="text" id="customSubjectInput" class="form-input" placeholder="Add custom subject (e.g. Microprocessors)">
+          <button type="button" id="addCustomSubjectBtn" class="btn btn-secondary">+ Add</button>
+        </div>
+      </div>
+
+      <!-- Configured Selected Subjects List with Segmented Buttons -->
+      <div id="selectedSubjectsConfig" style="margin-bottom: 20px;">
+        <label class="form-label" style="font-weight: 600;">Selected Subjects Configuration:</label>
+        <div id="configuredSubjectsList" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Config cards populated dynamically -->
+        </div>
+        <div id="subjectError" class="form-error" style="margin-top: 6px;">Please select at least one subject.</div>
+      </div>
+
+      <!-- Syllabus / Notes Upload Section (Optional) -->
+      <div class="card" style="background: var(--bg-primary); border-style: dashed; padding: 18px; margin-bottom: 12px;">
+        <h4 style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px;">Syllabus Upload (Optional)</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">
+          Upload your syllabus PDF or paste text to extract topics.
+        </p>
+
+        <div class="form-group">
+          <input type="file" id="notesFile" class="form-input" accept=".pdf,.txt">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <textarea id="syllabusText" class="form-input" rows="2" placeholder="Or paste syllabus text here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= STEP 3: Study Availability ================= -->
+    <div id="step3" class="wizard-step" style="display: none;">
+      <h2 style="font-size: 1.45rem; margin-bottom: 6px; color: var(--text-main);">Study availability</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+        Tell us how much time you can realistically commit each day.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="form-group">
+          <label class="form-label" for="studyDays">Study Days per Week (1–7)</label>
+          <input type="number" id="studyDays" class="form-input" min="1" max="7" value="6" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="studyHours">Daily Study Hours (0.5–12)</label>
+          <input type="number" id="studyHours" class="form-input" min="0.5" max="12" step="0.5" value="3.0" required>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="form-group">
+          <label class="form-label" for="preferredTime">Preferred Study Time</label>
+          <select id="preferredTime" class="form-select">
+            <option value="Morning">Morning</option>
+            <option value="Afternoon">Afternoon</option>
+            <option value="Evening" selected>Evening</option>
+            <option value="Night">Night</option>
+            <option value="Flexible">Flexible</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="languagePref">Language Preference</label>
+          <select id="languagePref" class="form-select">
+            <option value="English" selected>English</option>
+            <option value="Telugu">Telugu</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Bilingual">Bilingual</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Preferred Learning Styles:</label>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="learning_style" value="Coding practice" checked> Coding practice
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="learning_style" value="Reading notes" checked> Reading notes
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="learning_style" value="Video lectures"> Video lectures
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="learning_style" value="Mock tests"> Mock tests
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="learning_style" value="Previous year questions"> Previous year questions
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= STEP 4: Weak Topics & Challenges ================= -->
+    <div id="step4" class="wizard-step" style="display: none;">
+      <h2 style="font-size: 1.45rem; margin-bottom: 6px; color: var(--text-main);">Weak topics & challenges</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+        Highlight your main hurdles so MentorAI can schedule them early in your 7-day plan.
+      </p>
+
+      <div class="form-group">
+        <label class="form-label">Challenges Faced:</label>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="challenge" value="Unable to solve coding problems" checked> Unable to solve coding problems
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="challenge" value="Forgetting concepts" checked> Forgetting concepts
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="challenge" value="Lack of time"> Lack of time
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="challenge" value="Difficulty understanding theory"> Difficulty understanding theory
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" name="challenge" value="Poor consistency"> Poor consistency
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="weakTopicsInput">Weak Topics (comma-separated)</label>
+        <input type="text" id="weakTopicsInput" class="form-input" placeholder="e.g. Dynamic Programming, Normalization, Semaphore">
+      </div>
+
+      <div class="grid grid-2">
+        <div class="form-group">
+          <label class="form-label">Daily Revision?</label>
+          <div style="display: flex; gap: 16px; margin-top: 6px;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="daily_revision" value="yes" checked> Yes
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="daily_revision" value="no"> No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Weekly Mock Test (Day 7)?</label>
+          <div style="display: flex; gap: 16px; margin-top: 6px;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="weekly_mock_test" value="yes" checked> Yes
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="weekly_mock_test" value="no"> No
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= STEP 5: Review & Generate ================= -->
+    <div id="step5" class="wizard-step" style="display: none;">
+      <h2 style="font-size: 1.45rem; margin-bottom: 6px; color: var(--text-main);">Review your profile</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+        Verify your information before MentorAI generates your personalized 7-day study plan.
+      </p>
+
+      <div id="reviewContentArea" style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- Injected via onboarding.js -->
+      </div>
+    </div>
+
+    <!-- Consistent Bottom Buttons Row (Same position on every step!) -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <button type="button" id="wizardBackBtn" class="btn btn-secondary" style="min-width: 110px; visibility: hidden;">
+        ← Back
+      </button>
+
+      <div>
+        <button type="button" id="wizardContinueBtn" class="btn btn-primary btn-lg" style="min-width: 140px;">
+          Continue →
+        </button>
+        <button type="button" id="generatePlanBtn" class="btn btn-primary btn-lg" style="display: none; min-width: 220px;">
+          Generate My Personalized Plan 🚀
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/onboarding.js') }}"></script>
+{% endblock %}

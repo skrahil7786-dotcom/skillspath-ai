@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% set is_app = true %}
+
+{% block title %}Dashboard — MentorAI{% endblock %}
+
+{% block content %}
+<div style="max-width: var(--max-width); margin: 0 auto;">
+
+  <!-- Page Title matching sidebar -->
+  <div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle" id="dashboardSubtitle">Daily preparation overview and focus tasks.</p>
+  </div>
+
+  <!-- Empty State (Shown if no plan exists or user not onboarded) -->
+  <div id="dashboardEmptyState" class="card empty-state" style="display: none; margin-top: 24px;">
+    <div class="empty-state-icon">📋</div>
+    <h2 class="empty-state-title">No Study Plan Found</h2>
+    <p class="empty-state-desc">
+      Complete onboarding to generate your personalized plan.
+    </p>
+    <a href="/onboarding" class="btn btn-primary btn-lg" style="margin-top: 8px;">
+      Complete Onboarding
+    </a>
+  </div>
+
+  <!-- Active Dashboard Content (Exactly 5 sections) -->
+  <div id="dashboardActiveView">
+
+    <!-- 1. Welcome Header -->
+    <div style="margin-bottom: 24px;">
+      <h2 style="font-size: 1.5rem; color: var(--text-main); font-weight: 700; margin-bottom: 4px;">
+        Welcome back, <span id="studentFirstName">Student</span>
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Goal: <span id="studentGoal" style="font-weight: 600; color: var(--text-main);">GATE CSE</span> • Target: <span id="studentExamDate">Exam Date</span>
+      </p>
+    </div>
+
+    <!-- 2. Today's Focus Card -->
+    <div class="card" style="margin-bottom: 24px; border-left: 4px solid var(--primary);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span class="badge badge-primary">Today's Focus</span>
+            <span id="focusSubject" class="badge badge-neutral">Data Structures</span>
+          </div>
+          <h3 id="focusTopic" style="font-size: 1.35rem; color: var(--text-main); margin-bottom: 6px;">
+            Loading today's task...
+          </h3>
+          <p id="focusReason" style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin-bottom: 12px; max-width: 650px;">
+            Structured focus task for optimal retention.
+          </p>
+          <div style="font-size: 0.88rem; color: var(--text-dim);">
+            Duration: <strong id="focusDuration" style="color: var(--text-main);">120 mins</strong>
+          </div>
+        </div>
+
+        <div style="align-self: center;">
+          <a id="startTodayTaskBtn" href="/quiz" class="btn btn-primary btn-lg">
+            Start Today's Task →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Three KPI Cards Only -->
+    <div class="grid grid-3" style="margin-bottom: 24px;">
+      <!-- KPI 1: Quiz Accuracy -->
+      <div class="card">
+        <div style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">
+          Quiz Accuracy
+        </div>
+        <div id="kpiQuizAccuracy" style="font-size: 2.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">
+          --%
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Diagnostic average</div>
+      </div>
+
+      <!-- KPI 2: Study Streak -->
+      <div class="card">
+        <div style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">
+          Study Streak
+        </div>
+        <div id="kpiStudyStreak" style="font-size: 2.2rem; font-weight: 700; color: var(--warning); margin-bottom: 4px;">
+          🔥 0 Days
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Consecutive active days</div>
+      </div>
+
+      <!-- KPI 3: Revisions Due -->
+      <div class="card">
+        <div style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">
+          Revisions Due
+        </div>
+        <div id="kpiRevisionsDue" style="font-size: 2.2rem; font-weight: 700; color: var(--primary); margin-bottom: 4px;">
+          0
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Concepts to review today</div>
+      </div>
+    </div>
+
+    <!-- 4. Subject Progress (Selected subjects only) -->
+    <div class="card" style="margin-bottom: 24px;">
+      <h3 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 4px;">Subject Progress</h3>
+      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">
+        Topic mastery for your selected subjects.
+      </p>
+      <div id="subjectProgressList" style="display: flex; flex-direction: column; gap: 14px;">
+        <!-- Injected via dashboard.js -->
+      </div>
+    </div>
+
+    <!-- 5. Pending Reminders (Max 3 reminders) -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="font-size: 1.15rem; color: var(--text-main);">Pending Reminders</h3>
+        <a href="/reminders" style="font-size: 0.85rem; font-weight: 500;">View All Reminders →</a>
+      </div>
+
+      <div id="dashboardRemindersList" style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- Injected via dashboard.js -->
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.DASHBOARD_USER_ID = {{ user_id | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

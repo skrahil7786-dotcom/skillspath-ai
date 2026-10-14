@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MentorAI — AI-Powered Learning Mentor{% endblock %}</title>
+
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Design System CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div id="loadingMessage" style="font-size: 0.95rem; font-weight: 500; color: #374151;">Processing...</div>
+  </div>
+
+  {% if is_app %}
+  <!-- Authenticated App Shell -->
+  <div class="app-layout">
+    <!-- Desktop Sidebar (Exact Order: Dashboard, Study Plan, Quiz, Mentor, Resources, Reminders) -->
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <a href="/" class="brand-link">
+          <div class="brand-icon">M</div>
+          <span>MentorAI</span>
+        </a>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li>
+          <a href="/dashboard" class="sidebar-link {% if request.path.startswith('/dashboard') %}active{% endif %}">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/plan" class="sidebar-link {% if request.path.startswith('/plan') %}active{% endif %}">
+            <span class="nav-icon">📅</span>
+            <span>Study Plan</span>
+          </a>
+        </li>
+        <li>
+          <a href="/quiz" class="sidebar-link {% if request.path.startswith('/quiz') %}active{% endif %}">
+            <span class="nav-icon">🎯</span>
+            <span>Quiz</span>
+          </a>
+        </li>
+        <li>
+          <a href="/mentor" class="sidebar-link {% if request.path.startswith('/mentor') %}active{% endif %}">
+            <span class="nav-icon">🤖</span>
+            <span>Mentor</span>
+          </a>
+        </li>
+        <li>
+          <a href="/resources" class="sidebar-link {% if request.path.startswith('/resources') %}active{% endif %}">
+            <span class="nav-icon">📚</span>
+            <span>Resources</span>
+          </a>
+        </li>
+        <li>
+          <a href="/reminders" class="sidebar-link {% if request.path.startswith('/reminders') %}active{% endif %}">
+            <span class="nav-icon">⏰</span>
+            <span>Reminders</span>
+          </a>
+        </li>
+      </ul>
+
+      <div style="padding-top: 16px; border-top: 1px solid var(--border);">
+        <a href="/auth/login" class="sidebar-link" onclick="clearActiveUser()">
+          <span class="nav-icon">🚪</span>
+          <span>Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Mobile Bottom Navigation (Dashboard, Plan, Quiz, Mentor, More) -->
+    <nav class="mobile-bottom-nav">
+      <a href="/dashboard" class="mobile-nav-item {% if request.path.startswith('/dashboard') %}active{% endif %}">
+        <span class="mobile-nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="/plan" class="mobile-nav-item {% if request.path.startswith('/plan') %}active{% endif %}">
+        <span class="mobile-nav-icon">📅</span>
+        <span>Plan</span>
+      </a>
+      <a href="/quiz" class="mobile-nav-item {% if request.path.startswith('/quiz') %}active{% endif %}">
+        <span class="mobile-nav-icon">🎯</span>
+        <span>Quiz</span>
+      </a>
+      <a href="/mentor" class="mobile-nav-item {% if request.path.startswith('/mentor') %}active{% endif %}">
+        <span class="mobile-nav-icon">🤖</span>
+        <span>Mentor</span>
+      </a>
+      <a href="/resources" class="mobile-nav-item {% if request.path.startswith('/resources') or request.path.startswith('/reminders') %}active{% endif %}">
+        <span class="mobile-nav-icon">⋯</span>
+        <span>More</span>
+      </a>
+    </nav>
+  </div>
+
+  {% else %}
+  <!-- Public Layout (Landing, Auth, Onboarding) -->
+  <header class="landing-nav">
+    <div class="landing-nav-inner">
+      <a href="/" class="brand-link">
+        <div class="brand-icon">M</div>
+        <span>MentorAI</span>
+      </a>
+
+      <ul class="landing-links" id="landingNavLinks">
+        <li><a href="/#features" class="landing-link">Features</a></li>
+        <li><a href="/#how-it-works" class="landing-link">How It Works</a></li>
+        <li><a href="/auth/login" class="landing-link">Login</a></li>
+        <li>
+          <a href="/onboarding" class="btn btn-primary btn-sm">Get Started</a>
+        </li>
+      </ul>
+
+      <button id="mobileMenuToggle" class="mobile-menu-btn" aria-label="Toggle Navigation">
+        ☰
+      </button>
+    </div>
+  </header>
+
+  <main style="flex: 1;">
+    {% block public_content %}{% endblock %}
+  </main>
+  {% endif %}
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

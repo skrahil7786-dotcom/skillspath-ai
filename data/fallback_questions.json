@@ -1,0 +1,341 @@
+[
+  {
+    "subject_name": "Data Structures & Algorithms",
+    "topic": "Arrays & Searching",
+    "concept": "Binary Search Time Complexity",
+    "question": "What is the worst-case time complexity of binary search on a sorted array of size N?",
+    "options": ["O(1)", "O(log N)", "O(N)", "O(N log N)"],
+    "correct_index": 1,
+    "difficulty": "easy",
+    "explanation": "Binary search divides the search space in half at each step, resulting in a recurrence T(N) = T(N/2) + O(1), which solves to O(log N).",
+    "misconception": "Confusing binary search on arrays with linear search O(N) or binary tree traversal in an unbalanced tree."
+  },
+  {
+    "subject_name": "Data Structures & Algorithms",
+    "topic": "Linked Lists",
+    "concept": "Cycle Detection",
+    "question": "Floyd's Cycle-Finding Algorithm (tortoise and hare) detects a cycle in a singly linked list using which space complexity?",
+    "options": ["O(N)", "O(log N)", "O(1)", "O(N^2)"],
+    "correct_index": 2,
+    "difficulty": "easy",
+    "explanation": "Floyd's algorithm uses two pointers (slow moving 1 step, fast moving 2 steps), which only requires O(1) auxiliary memory.",
+    "misconception": "Thinking that hash-table cycle detection (which uses O(N) space) is the only way."
+  },
+  {
+    "subject_name": "Data Structures & Algorithms",
+    "topic": "Trees",
+    "concept": "Binary Search Tree Inorder Traversal",
+    "question": "Inorder traversal of a valid Binary Search Tree (BST) visits the nodes in which order?",
+    "options": ["Reverse sorted order", "Ascending sorted order", "Level-by-level order", "Random order depending on root"],
+    "correct_index": 1,
+    "difficulty": "easy",
+    "explanation": "In a BST, all nodes in the left subtree are smaller than root, and all in right subtree are greater. Inorder (Left, Root, Right) naturally visits them in ascending order.",
+    "misconception": "Assuming preorder gives sorted order."
+  },
+  {
+    "subject_name": "Data Structures & Algorithms",
+    "topic": "Dynamic Programming",
+    "concept": "0/1 Knapsack",
+    "question": "The classical 0/1 Knapsack problem with N items and weight capacity W has what time complexity using dynamic programming?",
+    "options": ["O(N log W)", "O(N * W)", "O(2^N)", "O(W^2)"],
+    "correct_index": 1,
+    "difficulty": "medium",
+    "explanation": "The DP table has dimensions (N+1) x (W+1) with O(1) computation per state, leading to pseudo-polynomial time O(N * W).",
+    "misconception": "Believing 0/1 Knapsack can be solved greedily like fractional knapsack."
+  },
+  {
+    "subject_name": "Data Structures & Algorithms",
+    "topic": "Graphs",
+    "concept": "Dijkstra's Algorithm",
+    "question": "Which edge condition causes Dijkstra's shortest path algorithm to fail or produce incorrect results?",
+    "options": ["Edges with equal positive weights", "Directed cycles", "Negative edge weights", "Disconnected components"],
+    "correct_index": 2,
+    "difficulty": "medium",
+    "explanation": "Dijkstra assumes that adding an edge to a path cannot decrease its total length. Negative edge weights violate the greedy choice property.",
+    "misconception": "Believing negative weight cycles are required for failure; even a single negative weight edge can break Dijkstra."
+  },
+  {
+    "subject_name": "Data Structures & Algorithms",
+    "topic": "Dynamic Programming",
+    "concept": "Longest Common Subsequence",
+    "question": "Given two strings of lengths M and N, what is the space complexity of the standard space-optimized 2-row DP for LCS?",
+    "options": ["O(M * N)", "O(min(M, N))", "O(M + N)", "O(1)"],
+    "correct_index": 1,
+    "difficulty": "hard",
+    "explanation": "Since computing the current row only requires values from the previous row, we only need to keep two rows of size min(M, N), yielding O(min(M, N)) space.",
+    "misconception": "Assuming that O(M * N) space is strictly necessary to compute the LCS length."
+  },
+  {
+    "subject_name": "DBMS",
+    "topic": "Relational Model",
+    "concept": "Candidate Key Properties",
+    "question": "What is the key difference between a Super Key and a Candidate Key in a relational schema?",
+    "options": [
+      "A Candidate Key allows null values, a Super Key does not",
+      "A Candidate Key is a minimal Super Key with no redundant attributes",
+      "A Super Key can only have one attribute",
+      "There can only be one Candidate Key per table"
+    ],
+    "correct_index": 1,
+    "difficulty": "easy",
+    "explanation": "A Super Key uniquely identifies a tuple. A Candidate Key is a minimal super key; removing any attribute destroys uniqueness.",
+    "misconception": "Assuming Primary Key and Candidate Key are synonymous, or that Super Keys are always larger than candidate keys."
+  },
+  {
+    "subject_name": "DBMS",
+    "topic": "Normalization",
+    "concept": "Boyce-Codd Normal Form (BCNF)",
+    "question": "A relational relation R is in BCNF if for every non-trivial functional dependency X -> Y:",
+    "options": [
+      "Y is a prime attribute",
+      "X is a Super Key",
+      "X is a subset of Y",
+      "R has no multi-valued dependencies"
+    ],
+    "correct_index": 1,
+    "difficulty": "medium",
+    "explanation": "BCNF requires that for every non-trivial FD X -> Y, the determinant X must be a super key. Unlike 3NF, Y being prime is not allowed as an alternative.",
+    "misconception": "Confusing 3NF condition (where Y can be prime) with BCNF."
+  },
+  {
+    "subject_name": "DBMS",
+    "topic": "Transactions",
+    "concept": "ACID Properties - Isolation",
+    "question": "Which concurrency problem occurs when a transaction reads data written by an uncommitted concurrent transaction?",
+    "options": ["Dirty Read", "Non-repeatable Read", "Phantom Read", "Lost Update"],
+    "correct_index": 0,
+    "difficulty": "easy",
+    "explanation": "A dirty read occurs when Transaction A reads modifications made by Transaction B before B commits; if B aborts/rollbacks, A has read invalid data.",
+    "misconception": "Mixing up Dirty Read with Non-repeatable Read (where data is read twice after another committed transaction modifies it)."
+  },
+  {
+    "subject_name": "DBMS",
+    "topic": "Indexing",
+    "concept": "B+ Trees vs B Trees",
+    "question": "Why are B+ Trees preferred over B Trees for disk-based database indexing?",
+    "options": [
+      "B+ Trees consume zero disk space",
+      "All leaf nodes are linked sequentially, enabling rapid range scans, and internal nodes store only keys",
+      "B+ Trees have a smaller fan-out than B Trees",
+      "B+ Trees do not require rebalancing during deletion"
+    ],
+    "correct_index": 1,
+    "difficulty": "medium",
+    "explanation": "In B+ Trees, data pointers reside strictly in leaves which are linked together in a doubly linked list, making range queries efficient. Higher fan-out reduces I/O depth.",
+    "misconception": "Believing B Trees store data only at leaves as well."
+  },
+  {
+    "subject_name": "DBMS",
+    "topic": "Transactions & Concurrency",
+    "concept": "Two-Phase Locking (2PL)",
+    "question": "Strict Two-Phase Locking (Strict 2PL) guarantees which important property in database concurrency?",
+    "options": [
+      "Freedom from deadlocks",
+      "Serializability and strict recoverable executions (no cascading aborts)",
+      "Maximum transaction throughput",
+      "Zero lock waiting time"
+    ],
+    "correct_index": 1,
+    "difficulty": "hard",
+    "explanation": "Strict 2PL holds all exclusive locks until commit or abort, guaranteeing conflict serializability and avoiding cascading rollbacks (cascadelessness/strictness). It does NOT prevent deadlocks.",
+    "misconception": "Thinking Strict 2PL eliminates deadlocks. Deadlocks can still occur in 2PL."
+  },
+  {
+    "subject_name": "Operating Systems",
+    "topic": "Processes & Threads",
+    "concept": "Process vs Thread",
+    "question": "What resource is typically shared among threads belonging to the same process?",
+    "options": [
+      "CPU register set",
+      "Call stack",
+      "Address space (heap, code, global data)",
+      "Program counter"
+    ],
+    "correct_index": 2,
+    "difficulty": "easy",
+    "explanation": "Threads in the same process share the virtual address space (heap, code segment, open file descriptors), but each thread has its own register state, program counter, and stack.",
+    "misconception": "Believing threads share call stacks or program counters."
+  },
+  {
+    "subject_name": "Operating Systems",
+    "topic": "Deadlocks",
+    "concept": "Coffman Conditions",
+    "question": "Which of the following is NOT one of the four necessary Coffman conditions for a deadlock to occur?",
+    "options": [
+      "Mutual Exclusion",
+      "Hold and Wait",
+      "Preemption allowed by kernel",
+      "Circular Wait"
+    ],
+    "correct_index": 2,
+    "difficulty": "easy",
+    "explanation": "The condition is 'No Preemption' (resources cannot be forcibly taken away). If preemption is allowed, deadlocks can be broken.",
+    "misconception": "Overlooking the word 'No' in 'No Preemption'."
+  },
+  {
+    "subject_name": "Operating Systems",
+    "topic": "Memory Management",
+    "concept": "Belady's Anomaly",
+    "question": "Belady's Anomaly describes a phenomenon where allocating more page frames results in more page faults. Which page replacement algorithm can suffer from it?",
+    "options": ["LRU (Least Recently Used)", "FIFO (First In First Out)", "Optimal Page Replacement", "LFU (Least Frequently Used)"],
+    "correct_index": 1,
+    "difficulty": "medium",
+    "explanation": "FIFO does not satisfy the inclusion property (it is not a stack algorithm), so increasing frames can increase page faults. LRU and Optimal are stack algorithms and never suffer from Belady's Anomaly.",
+    "misconception": "Believing LRU can suffer from Belady's Anomaly."
+  },
+  {
+    "subject_name": "Operating Systems",
+    "topic": "Synchronization",
+    "concept": "Semaphores vs Mutexes",
+    "question": "What is the primary conceptual difference between a Mutex and a Binary Semaphore?",
+    "options": [
+      "A Mutex can have values greater than 1",
+      "A Mutex has an ownership semantic (only the locking thread can unlock it), whereas a semaphore can be signaled by any thread",
+      "Semaphores are faster than Mutexes in all OS kernels",
+      "Mutexes are only implemented in hardware"
+    ],
+    "correct_index": 1,
+    "difficulty": "medium",
+    "explanation": "Mutexes incorporate ownership: the thread that acquires the mutex must be the one that releases it. Semaphores are signaling mechanisms without ownership restrictions.",
+    "misconception": "Believing a binary semaphore is completely identical to a mutex."
+  },
+  {
+    "subject_name": "Operating Systems",
+    "topic": "Virtual Memory",
+    "concept": "Inverted Page Table",
+    "question": "What is the chief advantage of an Inverted Page Table over a traditional multi-level hierarchical page table?",
+    "options": [
+      "Eliminates the need for TLBs entirely",
+      "Memory overhead is proportional to physical memory (number of frames), rather than total virtual address space",
+      "Makes address translation faster without any hashing",
+      "Allows infinite page sizes"
+    ],
+    "correct_index": 1,
+    "difficulty": "hard",
+    "explanation": "Inverted page tables have one entry per physical frame rather than per virtual page of every process, drastically reducing memory consumption for large 64-bit address spaces.",
+    "misconception": "Thinking inverted tables make lookups faster; they actually require hash tables or searching, which can be slower without a TLB hit."
+  },
+  {
+    "subject_name": "Java",
+    "topic": "OOP Concepts",
+    "concept": "Polymorphism & Method Overriding",
+    "question": "Which access modifier can be applied to an overriding method in a subclass in Java?",
+    "options": [
+      "More restrictive than the superclass method",
+      "Equally or less restrictive than the superclass method",
+      "Strictly private always",
+      "Only package-private"
+    ],
+    "correct_index": 1,
+    "difficulty": "easy",
+    "explanation": "An overriding method cannot reduce visibility (e.g. a protected method can be made protected or public, but not private or default). It can be equal or more accessible.",
+    "misconception": "Thinking the access modifier must be exactly identical to the parent's."
+  },
+  {
+    "subject_name": "Java",
+    "topic": "Memory Management",
+    "concept": "Stack vs Heap",
+    "question": "In Java, where are local primitive variables and object instances stored respectively?",
+    "options": [
+      "Local primitives on Heap, Object instances on Stack",
+      "Local primitives on Stack, Object instances on Heap",
+      "Both are stored in PermGen/Metaspace",
+      "Both are stored on the Stack"
+    ],
+    "correct_index": 1,
+    "difficulty": "easy",
+    "explanation": "Method call frames and their local variables (primitives and references) live on the thread's Stack, while all objects in Java are dynamically allocated on the Heap.",
+    "misconception": "Thinking object reference variables and the actual object reside in the same memory area."
+  },
+  {
+    "subject_name": "Java",
+    "topic": "Collections",
+    "concept": "HashMap Internal Working",
+    "question": "Starting in Java 8, when a bucket in a HashMap exceeds 8 elements (TREEIFY_THRESHOLD) and the array capacity is >= 64, the linked list is converted to which data structure?",
+    "options": ["Doubly Linked List", "Red-Black Tree", "B+ Tree", "Min Heap"],
+    "correct_index": 1,
+    "difficulty": "medium",
+    "explanation": "To prevent worst-case O(N) lookup time due to hash collisions, Java 8 converts heavy buckets into balanced Red-Black Trees, reducing lookup to O(log K).",
+    "misconception": "Assuming HashMaps always maintain linked lists regardless of collision count."
+  },
+  {
+    "subject_name": "Java",
+    "topic": "Concurrency",
+    "concept": "volatile keyword",
+    "question": "In Java, what guarantee does the 'volatile' keyword provide on a variable?",
+    "options": [
+      "Atomic compound operations (e.g., count++)",
+      "Visibility across threads (reads/writes go directly to main memory) and prevents instruction reordering",
+      "Acquires an intrinsic monitor lock on the object",
+      "Prevents the variable from ever being modified"
+    ],
+    "correct_index": 1,
+    "difficulty": "medium",
+    "explanation": "volatile guarantees visibility (changes by one thread are immediately visible to others) and establishes happens-before relationships preventing reordering. It does NOT make compound operations like count++ atomic.",
+    "misconception": "Assuming volatile provides mutual exclusion or makes counter increments thread-safe."
+  },
+  {
+    "subject_name": "SQL",
+    "topic": "Queries & Joins",
+    "concept": "LEFT JOIN vs INNER JOIN",
+    "question": "What will be returned for rows in the left table that have no matching rows in the right table during a LEFT OUTER JOIN?",
+    "options": [
+      "Those rows will be omitted from the result",
+      "Those rows will be included with NULL values in the right table's columns",
+      "An SQL execution error will be thrown",
+      "Default integer 0 will be placed in all unmatched columns"
+    ],
+    "correct_index": 1,
+    "difficulty": "easy",
+    "explanation": "A LEFT OUTER JOIN preserves all rows from the left table; unmatched columns from the right table are populated with NULLs.",
+    "misconception": "Assuming unmatched rows are dropped, which is what INNER JOIN does."
+  },
+  {
+    "subject_name": "SQL",
+    "topic": "Aggregation & Grouping",
+    "concept": "WHERE vs HAVING",
+    "question": "What is the fundamental difference between WHERE and HAVING clauses in an SQL query?",
+    "options": [
+      "WHERE filters groups after aggregation; HAVING filters individual rows before aggregation",
+      "WHERE filters rows before aggregation; HAVING filters aggregated groups",
+      "WHERE can only be used with SELECT *",
+      "There is no difference; they are interchangeable aliases"
+    ],
+    "correct_index": 1,
+    "difficulty": "easy",
+    "explanation": "WHERE filters individual rows before GROUP BY aggregation occurs. HAVING filters groups formed by GROUP BY after aggregate functions (like COUNT, SUM) are computed.",
+    "misconception": "Trying to use aggregate functions like COUNT() directly in a WHERE clause."
+  },
+  {
+    "subject_name": "SQL",
+    "topic": "Subqueries & Window Functions",
+    "concept": "RANK() vs DENSE_RANK()",
+    "question": "Given values (100, 90, 90, 80), what ranks are assigned by DENSE_RANK() in descending order?",
+    "options": [
+      "1, 2, 2, 4",
+      "1, 2, 2, 3",
+      "1, 2, 3, 4",
+      "1, 1, 2, 3"
+    ],
+    "correct_index": 1,
+    "difficulty": "medium",
+    "explanation": "RANK() leaves gaps after ties (1, 2, 2, 4), while DENSE_RANK() assigns consecutive integers without gaps (1, 2, 2, 3).",
+    "misconception": "Thinking RANK() and DENSE_RANK() behave identically on ties."
+  },
+  {
+    "subject_name": "SQL",
+    "topic": "Transactions & Locks",
+    "concept": "Index Scan vs Table Scan",
+    "question": "In query execution plans, why might a database optimizer choose a Full Table Scan over an Index Scan even when an index exists on the filtered column?",
+    "options": [
+      "The index has more than 3 columns",
+      "The query selectivity is low (it retrieves a large percentage of total rows, making sequential disk I/O cheaper than random index lookups)",
+      "The table has fewer than 2 rows",
+      "Indexes cannot be used with integers"
+    ],
+    "correct_index": 1,
+    "difficulty": "hard",
+    "explanation": "When a query retrieves a large fraction of the table (e.g. >20%), sequential I/O of a full table scan is faster than repeated random lookups into the heap/clustered index via non-clustered index pages.",
+    "misconception": "Assuming that having an index means the optimizer will always use it."
+  }
+]

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% set is_app = true %}
+
+{% block title %}Study Plan — MentorAI{% endblock %}
+
+{% block content %}
+<div style="max-width: var(--max-width); margin: 0 auto;">
+
+  <!-- Page Title matching sidebar -->
+  <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <h1 class="page-title">Study Plan</h1>
+      <p class="page-subtitle">Your structured 7-day learning and practice roadmap.</p>
+    </div>
+    <div>
+      <button id="recalibratePlanBtn" class="btn btn-secondary btn-sm">
+        🔄 Recalibrate Plan
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty State (Shown if no plan exists) -->
+  <div id="planEmptyState" class="card empty-state" style="display: none; margin-top: 24px;">
+    <div class="empty-state-icon">📅</div>
+    <h2 class="empty-state-title">No Study Plan Found</h2>
+    <p class="empty-state-desc">
+      Complete onboarding to generate your personalized plan.
+    </p>
+    <a href="/onboarding" class="btn btn-primary btn-lg" style="margin-top: 8px;">
+      Complete Onboarding
+    </a>
+  </div>
+
+  <!-- 7-Day Timeline Container -->
+  <div id="planTimelineContainer" style="display: flex; flex-direction: column; gap: 16px;">
+    <!-- Populated dynamically via script -->
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  let userId = {{ user_id | tojson }};
+  if (!userId) {
+    userId = getActiveUserId();
+  } else {
+    setActiveUserId(userId);
+  }
+
+  const emptyEl = document.getElementById('planEmptyState');
+  const timelineEl = document.getElementById('planTimelineContainer');
+
+  if (!userId) {
+    emptyEl.style.display = 'flex';
+    timelineEl.style.display = 'none';
+    return;
+  }
+
+  async function loadPlan() {
+    showLoading("Loading study plan...");
+    const res = await apiFetch(`/api/dashboard/${userId}`);
+    hideLoading();
+
+    if (res.ok && res.data && res.data.success) {
+      const plan = res.data.data.study_plan;
+      if (!plan || plan.length === 0) {
+        emptyEl.style.display = 'flex';
+        timelineEl.style.display = 'none';
+      } else {
+        emptyEl.style.display = 'none';
+        timelineEl.style.display = 'flex';
+        renderTimeline(plan);
+      }
+    } else {
+      emptyEl.style.display = 'flex';
+      timelineEl.style.display = 'none';
+    }
+  }
+
+  async function recalibratePlan() {
+    showLoading("Recalibrating 7-day study plan...");
+    const res = await apiFetch(`/api/onboarding/generate-plan/${userId}`, { method: 'POST' });
+    hideLoading();
+
+    if (res.ok && res.data && res.data.success) {
+      renderTimeline(res.data.plan);
+    } else {
+      alert("Error recalibrating plan. Please try again.");
+    }
+  }
+
+  function renderTimeline(planDays) {
+    timelineEl.innerHTML = '';
+
+    planDays.forEach((day, idx) => {
+      const isToday = (idx === 0); // Highlight today (Day 1)
+      const card = document.createElement('div');
+      card.className = 'card';
+      if (isToday) {
+        card.style.borderColor = 'var(--primary)';
+        card.style.boxShadow = '0 2px 6px -1px rgba(79, 70, 229, 0.15)';
+      }
+
+      card.innerHTML = `
+        <!-- Day Card Header (Clickable to collapse/expand) -->
+        <div class="day-toggle-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="badge ${isToday ? 'badge-primary' : 'badge-neutral'}" style="font-size: 0.85rem; font-weight: 600;">
+              Day ${day.day_number} ${isToday ? '• Today' : ''}
+            </span>
+            <div>
+              <h3 style="font-size: 1.1rem; color: var(--text-main); margin: 0;">${day.focus_subject}</h3>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">
+                ${day.focus_topic}
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="font-size: 0.88rem; color: var(--text-muted); font-weight: 500;">⏱️ ${day.study_minutes || 180} mins</span>
+            <span class="toggle-icon" style="color: var(--text-muted); font-size: 0.95rem;">
+              ${isToday ? '▲' : '▼'}
+            </span>
+          </div>
+        </div>
+
+        <!-- Collapsible Day Details (Today is expanded, others collapsed) -->
+        <div class="day-body" style="display: ${isToday ? 'block' : 'none'}; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border);">
+          <div class="grid grid-3" style="gap: 14px; margin-bottom: 16px;">
+            <div style="background: var(--bg-primary); border-radius: 10px; padding: 14px; border-left: 3px solid var(--primary);">
+              <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 4px;">
+                Learning Task
+              </div>
+              <div style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">${day.learning_task}</div>
+            </div>
+
+            <div style="background: var(--bg-primary); border-radius: 10px; padding: 14px; border-left: 3px solid var(--success);">
+              <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 4px;">
+                Practice Task
+              </div>
+              <div style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">${day.practice_task}</div>
+            </div>
+
+            <div style="background: var(--bg-primary); border-radius: 10px; padding: 14px; border-left: 3px solid var(--warning);">
+              <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 4px;">
+                Revision Task
+              </div>
+              <div style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">${day.revision_task}</div>
+            </div>
+          </div>
+
+          <!-- One 'Open Resource' Button per day -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 10px 14px; background: #f9fafb; border-radius: 10px; border: 1px solid var(--border);">
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+              Recommended: <strong>${day.recommended_resource_type || 'Curated notes & practice problems'}</strong>
+            </div>
+            <div>
+              <a href="/resources" class="btn btn-primary btn-sm">
+                Open Resource →
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Accordion toggle
+      const header = card.querySelector('.day-toggle-header');
+      const body = card.querySelector('.day-body');
+      const icon = card.querySelector('.toggle-icon');
+
+      header.addEventListener('click', () => {
+        const isOpen = (body.style.display !== 'none');
+        body.style.display = isOpen ? 'none' : 'block';
+        icon.textContent = isOpen ? '▼' : '▲';
+      });
+
+      timelineEl.appendChild(card);
+    });
+  }
+
+  document.getElementById('recalibratePlanBtn')?.addEventListener('click', recalibratePlan);
+
+  loadPlan();
+});
+</script>
+{% endblock %}

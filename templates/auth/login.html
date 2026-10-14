@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Log In — MentorAI{% endblock %}
+
+{% block public_content %}
+<div style="min-height: calc(100vh - 120px); display: flex; align-items: center; justify-content: center; padding: 2rem 1rem;">
+  <div class="glass-card reveal" style="width: 100%; max-width: 440px; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+    <!-- Logo -->
+    <div style="display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.5rem;">
+      <div class="brand-spark">✦</div>
+      <span class="brand-logo" style="font-size: 1.5rem;">Mentor<span class="ai">AI</span></span>
+    </div>
+
+    <h2 style="font-size: 1.6rem; color: #fff; margin-bottom: 0.4rem;">Welcome back</h2>
+    <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 2rem;">
+      Log in to continue your personalized exam preparation.
+    </p>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Email address</label>
+        <input type="email" id="loginEmail" class="form-input" placeholder="student@college.edu" required>
+        <div id="emailError" class="form-error">Please enter a valid email address.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="loginPassword">Password</label>
+        <div style="position: relative;">
+          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" style="padding-right: 2.75rem;" required>
+          <button type="button" id="togglePasswordBtn" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.1rem; padding: 4px;">
+            👁️
+          </button>
+        </div>
+        <div id="passwordError" class="form-error">Password must be at least 6 characters.</div>
+      </div>
+
+      <div style="margin-top: 1.75rem;">
+        <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-block btn-lg">
+          Log In →
+        </button>
+      </div>
+    </form>
+
+    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--card-border); font-size: 0.9rem; color: var(--text-muted);">
+      Don't have an account?
+      <a href="/auth/signup" style="color: var(--accent-secondary); font-weight: 600; margin-left: 0.25rem;">Sign up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('loginForm');
+  const emailInput = document.getElementById('loginEmail');
+  const passwordInput = document.getElementById('loginPassword');
+  const emailError = document.getElementById('emailError');
+  const passwordError = document.getElementById('passwordError');
+  const toggleBtn = document.getElementById('togglePasswordBtn');
+
+  // Password visibility toggle
+  toggleBtn.addEventListener('click', () => {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      toggleBtn.textContent = '🙈';
+    } else {
+      passwordInput.type = 'password';
+      toggleBtn.textContent = '👁️';
+    }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let isValid = true;
+
+    const email = emailInput.value.trim();
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      emailError.style.display = 'block';
+      isValid = false;
+    } else {
+      emailError.style.display = 'none';
+    }
+
+    const password = passwordInput.value;
+    if (!password || password.length < 6) {
+      passwordError.style.display = 'block';
+      isValid = false;
+    } else {
+      passwordError.style.display = 'none';
+    }
+
+    if (isValid) {
+      showLoading("Signing you in...");
+      localStorage.setItem('mentorai_user_email', email);
+      // If user had an existing ID, keep it, otherwise default to demo user 1 or newly onboarded
+      const existingId = getActiveUserId() || 1;
+      setActiveUserId(existingId);
+      setTimeout(() => {
+        window.location.href = `/dashboard/${existingId}`;
+      }, 500);
+    }
+  });
+});
+</script>
+{% endblock %}
